@@ -1,3 +1,7 @@
+* 0.1.2 (6 June 2023)
+
+- Fix largeFlag and sweepFlag flags text representation from Graphics.Svg.Path.Arc (abs and relative) functions
+
 * 0.1.1-r7 (23 May 2023)
 
 - Allow `base-4.18`, test with GHC 9.6

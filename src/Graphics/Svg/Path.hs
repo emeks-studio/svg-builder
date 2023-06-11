@@ -25,6 +25,11 @@ import           Data.Text.Lazy.Builder.RealFloat
 toText :: RealFloat a => a -> Text
 toText = toStrict . toLazyText . formatRealFloat Fixed (Just 4)
 
+-- | Boolean flags should be encoded as Integer texts.
+boolToText :: Bool -> Text
+boolToText True  = "1"
+boolToText False = "0"
+
 -- | moveto (absolute)
 mA :: RealFloat a =>  a -> a -> Text
 mA x y = T.concat ["M " ,toText x, ",", toText y, " "]
@@ -98,16 +103,16 @@ tR :: RealFloat a =>  a -> a -> Text
 tR x y = T.concat [ "t ", toText x, ",", toText y, " "]
 
 -- | Arc (absolute)
-aA :: RealFloat a =>  a -> a -> a -> a -> a -> a -> a -> Text
+aA :: RealFloat a =>  a -> a -> a -> Bool -> Bool -> a -> a -> Text
 aA rx ry xrot largeFlag sweepFlag x y = T.concat
-  [ "A ", toText rx, ",", toText ry, " ", toText xrot, " ", toText largeFlag
-  , " ", toText sweepFlag, " ", toText x, " ", toText y, " "]
+  [ "A ", toText rx, ",", toText ry, " ", toText xrot, " ", boolToText largeFlag
+  , " ", boolToText sweepFlag, " ", toText x, " ", toText y, " "]
 
 -- | Arc (relative)
-aR :: RealFloat a =>  a -> a -> a -> a -> a -> a -> a -> Text
+aR :: RealFloat a =>  a -> a -> a -> Bool -> Bool -> a -> a -> Text
 aR rx ry xrot largeFlag sweepFlag x y = T.concat
-  [ "a ", toText rx, ",", toText ry, " ", toText xrot, " ", toText largeFlag
-  , " ", toText sweepFlag, " ", toText x, " ", toText y, " "]
+  [ "a ", toText rx, ",", toText ry, " ", toText xrot, " ", boolToText largeFlag
+  , " ", boolToText sweepFlag, " ", toText x, " ", toText y, " "]
 
 -- | closepath
 z :: Text
